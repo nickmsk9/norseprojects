@@ -43,13 +43,6 @@ if (file_exists ($file)) {
 } else {
     $notes = [];
 }
-foreach ($notes as $note) {
-    $data = explode('--##--', $note);
-    echo "<pre>";
-    //var_dump($note);
-    var_dump($data);
-    echo "</pre>";
-}
 
 /// Основная логика записи в файл и чтения данных заметки из файла //////////
 
@@ -61,130 +54,97 @@ foreach ($notes as $note) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Мои заметки</title>
+    <link rel = "stylesheet" href="css/style.css">
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
 
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f4f1;
-            color: #111;
-        }
-
-        .container {
-            width: min(720px, calc(100% - 40px));
-            margin: 0 auto;
-            padding: 70px 0;
-        }
-
-        h1 {
-            margin: 0 0 50px;
-            font-size: 42px;
-            font-weight: 500;
-            letter-spacing: -1.5px;
-        }
-
-        form {
-            margin-bottom: 28px;
-            padding-bottom: 28px;
-            border-bottom: 1px solid #d5d5d0;
-        }
-
-        input,
-        textarea {
-            width: 100%;
-            margin-bottom: 12px;
-            padding: 16px 0;
-            border: 0;
-            border-bottom: 1px solid #999;
-            border-radius: 0;
-            outline: none;
-            background: transparent;
-            color: #111;
-            font: inherit;
-        }
-
-        textarea {
-            min-height: 130px;
-            resize: vertical;
-        }
-
-        input::placeholder,
-        textarea::placeholder {
-            color: #777;
-        }
-
-        input:focus,
-        textarea:focus {
-            border-bottom-color: #111;
-        }
-
-        button {
-            padding: 13px 22px;
-            border: 1px solid #111;
-            border-radius: 0;
-            background: #111;
-            color: #fff;
-            font: inherit;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        button:hover {
-            background: transparent;
-            color: #111;
-        }
-
-        form:nth-of-type(2) button {
-            background: transparent;
-            color: #111;
-        }
-
-        form:nth-of-type(2) button:hover {
-            background: #111;
-            color: #fff;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 40px 0;
-            }
-
-            h1 {
-                font-size: 34px;
-                margin-bottom: 35px;
-            }
-        }
-    </style>
 </head>
 
 <body>
 
-<main class="container">
+<header class="topbar">
+    <div class="brand">NOTES / PHP</div>
+    <div class="status">Created for practice</div>
+</header>
 
-    <h1>Мои заметки</h1>
+<div class="page">
 
-    <form action="" method="post">
-        <input type="text" name="name" placeholder="Введите имя">
-        <button type="submit">Войти</button>
-    </form>
+    <aside class="sidebar">
 
-    <form action="" method="post">
-        <button type="submit" name="logout">Выйти</button>
-    </form>
+        <div class="eyebrow">Account</div>
 
-    <form action="" method="post">
-        <textarea name="note" placeholder="Введите заметку"></textarea>
-        <button type="submit">Добавить заметку</button>
-    </form>
+        <div class="panel">
 
-</main>
+            <form action="" method="post">
+                <input
+                        type="text"
+                        name="name"
+                        placeholder="Введите имя"
+                >
+
+                <button type="submit">
+                    Войти
+                </button>
+            </form>
+
+            <form action="" method="post">
+                <button
+                        type="submit"
+                        name="logout"
+                        class="logout"
+                >
+                    Выйти
+                </button>
+            </form>
+
+        </div>
+
+        <div class="eyebrow">New entry</div>
+
+        <form action="" method="post">
+            <textarea
+                    name="note"
+                    placeholder="Введите заметку"></textarea>
+
+            <button type="submit">
+                Добавить заметку
+            </button>
+        </form>
+
+    </aside>
+
+    <main class="content">
+
+        <div class="eyebrow">
+            Personal archive
+        </div>
+
+        <h1>Мои<br>заметки</h1>
+
+        <div class="notes-header">
+            <h2>Entries</h2>
+            <span>Archive</span>
+        </div>
+
+        <div class="note-placeholder">
+            <?php
+
+            foreach ($notes as $note) {
+                $data = explode('--##--', $note);
+
+                echo "<pre>";
+                echo "Автор: " . htmlspecialchars($data[0]) . PHP_EOL;
+                echo "Заметка: " . htmlspecialchars($data[1]);
+                echo "</pre>";
+            }
+
+
+
+            ?>
+        </div>
+
+    </main>
+
+</div>
 
 </body>
 </html>
