@@ -7,15 +7,16 @@ $file = 'notes.txt';
 
 if (isset($_POST['logout'])) {
     unset($_SESSION['name']);
+
+    header('Location: index.php');
+    die;
 }
+
 
 if (!empty($_POST['name'])) {
     $_SESSION['name'] = $_POST['name'];
 }
 
-if (isset($_SESSION['name'])) {
-    echo "Привет, " . htmlspecialchars($_SESSION['name']);
-}
 
 ////////// Авторизация и запись имени в сессию /////////////////////
 ///
@@ -74,27 +75,37 @@ if (file_exists ($file)) {
 
         <div class="panel">
 
-            <form action="" method="post">
-                <input
-                        type="text"
-                        name="name"
-                        placeholder="Введите имя"
-                >
+            <?php if (!isset($_SESSION['name'])): ?>
 
-                <button type="submit">
-                    Войти
-                </button>
-            </form>
+                <form action="" method="post">
+                    <input
+                            type="text"
+                            name="name"
+                            placeholder="Введите имя"
+                    >
 
-            <form action="" method="post">
-                <button
-                        type="submit"
-                        name="logout"
-                        class="logout"
-                >
-                    Выйти
-                </button>
-            </form>
+                    <button type="submit">
+                        Войти
+                    </button>
+                </form>
+
+            <?php else: ?>
+
+                <div>
+                    Привет, <?= htmlspecialchars($_SESSION['name']) ?>
+                </div>
+
+                <form action="" method="post">
+                    <button
+                            type="submit"
+                            name="logout"
+                            class="logout"
+                    >
+                        Выйти
+                    </button>
+                </form>
+
+            <?php endif; ?>
 
         </div>
 
@@ -127,17 +138,26 @@ if (file_exists ($file)) {
 
         <div class="note-placeholder">
             <?php
+            if (isset($_SESSION['name'])) {
+                $hasNotes = false;
 
-            foreach ($notes as $note) {
-                $data = explode('--##--', $note);
+                foreach ($notes as $note) {
+                    $data = explode('--##--', $note);
 
-                echo "<pre>";
-                echo "Автор: " . htmlspecialchars($data[0]) . PHP_EOL;
-                echo "Заметка: " . htmlspecialchars($data[1]);
-                echo "</pre>";
+                    if ($data[0] == $_SESSION['name']) {
+                        $hasNotes = true;
+
+                        echo "<pre>";
+                        echo "Автор: " . htmlspecialchars($data[0]) . PHP_EOL;
+                        echo "Заметка: " . htmlspecialchars($data[1]);
+                        echo "</pre>";
+                    }
+                }
+
+                if (!$hasNotes) {
+                    echo "У вас пока нет заметок";
+                }
             }
-
-
 
             ?>
         </div>
