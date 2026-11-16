@@ -1,0 +1,10 @@
+name: norseprojects-dev
+services:
+  php:
+    image: php:8.5-cli
+    working_dir: /opt/project
+    command: ["php", "-S", "0.0.0.0:8080", "-t", "public"]
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - .:/opt/project:ro
